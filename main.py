@@ -1,8 +1,10 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
+from flask_cors import CORS
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
 app = Flask(__name__)
+CORS(app)
 
 # Fonction pour récupérer les informations d'identification du fichier JSON
 def get_credentials(): 
@@ -43,8 +45,14 @@ def send_data():
     worksheet.append_row([data["A"]])
     return "Données envoyées avec succès à Google Sheet!"
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
 
   #send data
   #curl -X POST -H "Content-Type: application/json" -d '{"A": "Valeur 1"}' https://GSheet-APi.aminecherrered.repl.co/send_data
+  
